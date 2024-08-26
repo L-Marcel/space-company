@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddpbhaudhbfp0"]
+
+[ext_resource type="Script" path="res://generation/tiles/Tile.gd" id="1_5qxfi"]
+
+[sub_resource type="Gradient" id="Gradient_akfd7"]
+colors = PackedColorArray(0, 1, 0, 1, 1, 0.254902, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qfhh7"]
+gradient = SubResource("Gradient_akfd7")
+width = 16
+height = 16
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2g2km"]
+size = Vector2(16, 16)
+
+[node name="Tile" type="StaticBody2D"]
+script = ExtResource("1_5qxfi")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(8, 8)
+texture = SubResource("GradientTexture2D_qfhh7")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(8, 8)
+shape = SubResource("RectangleShape2D_2g2km")

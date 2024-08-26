@@ -1,0 +1,87 @@
+[gd_scene load_steps=8 format=3 uid="uid://bhn7kr1610rvw"]
+
+[ext_resource type="Script" path="res://Player.gd" id="1_ten53"]
+[ext_resource type="Script" path="res://PlayerInput.gd" id="2_ch2bw"]
+
+[sub_resource type="SystemFont" id="SystemFont_slk4k"]
+subpixel_positioning = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_4f0if"]
+font = SubResource("SystemFont_slk4k")
+font_size = 32
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ukc7e"]
+size = Vector2(12, 12)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_pehh1"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:velocity")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:id")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:chunk")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ptoty"]
+properties/0/path = NodePath(".:direction")
+properties/0/spawn = false
+properties/0/replication_mode = 2
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("input") groups=["player"]]
+collision_layer = 0
+collision_mask = 0
+motion_mode = 1
+script = ExtResource("1_ten53")
+input = NodePath("PlayerInput")
+
+[node name="Camera" type="Camera2D" parent="."]
+enabled = false
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = 4.0
+offset_right = 20.0
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Control"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -18.5
+offset_top = -22.5
+offset_right = 18.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "01"
+label_settings = SubResource("LabelSettings_4f0if")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ukc7e")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_pehh1")
+
+[node name="PlayerInput" type="MultiplayerSynchronizer" parent="."]
+root_path = NodePath(".")
+replication_config = SubResource("SceneReplicationConfig_ptoty")
+script = ExtResource("2_ch2bw")
