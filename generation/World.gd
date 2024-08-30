@@ -1,15 +1,16 @@
 extends Node
 
-const small_chunks: PackedScene = preload("res://generation/SmallWorldChunks.tscn");
+const chunks_scene: PackedScene = preload("res://generation/Chunks.tscn");
 
-var noise: FastNoiseLite = FastNoiseLite.new();
-var data: StreamPeerBuffer = StreamPeerBuffer.new();
+var width: int = 10;
+var height: int = 3;
 
 var chunks: Chunks:
 	set(value):
 		chunks = value;
-		start();
-		update();
+		if chunks:
+			start();
+			update();
 var enabled_chunks: Dictionary = {};
 
 var player: Player;
@@ -18,30 +19,19 @@ var thread: Thread;
 
 func _ready() -> void:
 	randomize();
-func generate() -> void:
-	noise.seed = randi();
-	noise.fractal_octaves = 3;
-	if !DirAccess.dir_exists_absolute("user://world"): 
-		DirAccess.make_dir_absolute("user://world");
-	var game: Node2D = get_tree().get_first_node_in_group("game");
-	var world: Node2D = small_chunks.instantiate();
-	game.add_child(world);
-	if !world.is_node_ready():
-		await world.ready;
-	update();
-	#var file: FileAccess = FileAccess.open("user://world/data.txt", FileAccess.ModeFlags.WRITE);
-	#file.store_buffer(data.data_array);
-	#file.close();
-	
-@rpc("authority", "call_local", "reliable")
-func fetch(_seed: int, bytes: PackedByteArray) -> void:
-	noise.seed = _seed;
-	noise.fractal_octaves = 3;
-	var game: Node2D = get_tree().get_first_node_in_group("game");
-	var world: Node2D = small_chunks.instantiate();
-	data.put_data(bytes);
-	game.add_child(world);
 
+@rpc("authority", "call_local", "reliable")
+func fetch(width: int, height: int, _seed: int, bytes: PackedByteArray) -> void:
+	width = width;
+	height = height;
+	Tiles.fetch(_seed, bytes);
+
+func convert_size(_size: int) -> Vector2i:
+	match _size:
+		0: return Vector2i(4, 5);
+		1: return Vector2i(8, 10);
+		3: return Vector2i(20, 40);
+		_: return Vector2i(10, 20);
 func start() -> void:
 	semaphore = Semaphore.new();
 	thread = Thread.new();
@@ -59,6 +49,7 @@ func prepare() -> void:
 	for id in enabled_chunks: 
 		enabled_chunks[id].remove = true;
 func create() -> void:
+	if !player: return;
 	for chunk in player.chunks:
 		chunk.remove = false;
 		enabled_chunks[chunk.id] = chunk;

@@ -1,49 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://dg06n0m7vjv7i"]
+[gd_scene load_steps=3 format=3 uid="uid://c426ecrpbsjbs"]
 
-[ext_resource type="Script" path="res://host.gd" id="1_huuww"]
-[ext_resource type="Script" path="res://join.gd" id="2_x3tsg"]
-[ext_resource type="Script" path="res://Force.gd" id="3_8gpx1"]
+[ext_resource type="PackedScene" uid="uid://crybem2vv88d1" path="res://generation/Chunks.tscn" id="1_ae476"]
+[ext_resource type="Script" path="res://Game.gd" id="1_is8yl"]
 
-[node name="Game" type="Node2D" groups=["game"]]
+[node name="Game" type="Node2D"]
+script = ExtResource("1_is8yl")
 
-[node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="MarginContainer" type="MarginContainer" parent="Control"]
-layout_mode = 0
-offset_right = 81.0
-offset_bottom = 131.0
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
-layout_mode = 2
-
-[node name="Host" type="Button" parent="Control/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Host"
-script = ExtResource("1_huuww")
-
-[node name="Join" type="Button" parent="Control/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Join
-"
-script = ExtResource("2_x3tsg")
-
-[node name="Force" type="Button" parent="Control/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Force"
-script = ExtResource("3_8gpx1")
+[node name="Chunks" parent="." instance=ExtResource("1_ae476")]
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://Player.tscn")
 spawn_path = NodePath("..")
-
-[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/Host" to="Control/MarginContainer/VBoxContainer/Host" method="_on_pressed"]
-[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/Join" to="Control/MarginContainer/VBoxContainer/Join" method="_on_pressed"]
-[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/Force" to="Control/MarginContainer/VBoxContainer/Force" method="_on_pressed"]

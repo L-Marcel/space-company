@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1x2n6qkmgfhn"]
+
+[sub_resource type="Theme" id="Theme_5l61m"]
+AcceptDialog/constants/buttons_min_width = 100
+AcceptDialog/constants/buttons_separation = 18
+AcceptDialog/constants/title_height = 26
+
+[node name="DeleteWorldConfirmation" type="ConfirmationDialog"]
+title = "Deseja mesmo apagar esse mundo?!"
+initial_position = 1
+size = Vector2i(348, 90)
+visible = true
+always_on_top = true
+theme = SubResource("Theme_5l61m")
+ok_button_text = "Sim"
+dialog_text = "                Essa ação não é reversível!"
+cancel_button_text = "Não"
