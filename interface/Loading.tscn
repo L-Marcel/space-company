@@ -12,7 +12,6 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
 [node name="Loading" type="CanvasLayer" node_paths=PackedStringArray("progress", "label")]
-process_priority = 1
 script = ExtResource("1_tkh18")
 progress = NodePath("PanelContainer/VBoxContainer/ProgressBar")
 label = NodePath("PanelContainer/VBoxContainer/MarginContainer/Label")
@@ -23,7 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.435294)
+color = Color(0.227451, 0.227451, 0.227451, 1)
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 clip_children = 2
@@ -59,6 +58,8 @@ layout_mode = 2
 text = "Criando mundo . . . "
 
 [node name="ProgressBar" type="ProgressBar" parent="PanelContainer/VBoxContainer"]
+process_thread_group = 2
+process_thread_group_order = 0
+process_thread_messages = 0
 custom_minimum_size = Vector2(47, 0)
 layout_mode = 2
-value = 32.5

@@ -28,8 +28,8 @@ func _on_exit_pressed() -> void:
 	get_tree().change_scene_to_packed(host_menu);
 
 func generate(_seed: int, _size: int, _name: String) -> void:
-	_name = _name.strip_escapes().trim_prefix(" ").trim_suffix(" ").to_snake_case();
-	var folder: String = "user://worlds/" + _name;
+	var filename: String = _name.strip_escapes().trim_prefix(" ").trim_suffix(" ").to_snake_case();
+	var folder: String = "user://worlds/" + filename;
 	if !DirAccess.dir_exists_absolute(folder): 
 		var error: Error = DirAccess.make_dir_absolute(folder);
 		if error != OK: 
@@ -41,7 +41,8 @@ func generate(_seed: int, _size: int, _name: String) -> void:
 	Tiles.generate(_seed, _size);
 	Loading.update(98, "Salvando arquivo . . .");
 	var packed_world: StreamPeerBuffer = StreamPeerBuffer.new();
-	packed_world.put_32(_seed);
+	packed_world.put_string(_name);
+	packed_world.put_64(_seed);
 	packed_world.put_u8(_size);
 	packed_world.put_data(Tiles.get_bytes());
 	var file: FileAccess = FileAccess.open(folder + "/data.dat", FileAccess.ModeFlags.WRITE);

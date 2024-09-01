@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://ewlhj63nvw63"]
-
-[ext_resource type="Script" path="res://interface/Generator.gd" id="1_fortf"]
-
-[node name="Generator" type="Node" node_paths=PackedStringArray("progress_bar", "label")]
-script = ExtResource("1_fortf")
-progress_bar = NodePath("")
-label = NodePath("")

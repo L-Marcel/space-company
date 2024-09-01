@@ -17,7 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Server="*res://Server.gd"
+Server="*res://multiplayer/Server.gd"
+Client="*res://multiplayer/Client.gd"
 Tiles="*res://generation/Tiles.gd"
 World="*res://generation/World.tscn"
 Loading="*res://interface/Loading.tscn"
@@ -25,8 +26,8 @@ Loading="*res://interface/Loading.tscn"
 [global_group]
 
 player=""
-chunks=""
 game=""
+map=""
 
 [rendering]
 

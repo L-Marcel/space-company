@@ -41,8 +41,9 @@ text = "Semente "
 [node name="SpinBox" type="SpinBox" parent="Center/Options/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-min_value = -4.29497e+09
-max_value = 4.29497e+09
+min_value = -9.22337e+18
+max_value = 9.22337e+18
+update_on_text_changed = true
 custom_arrow_step = 1.0
 
 [node name="OptionButton" type="OptionButton" parent="Center/Options"]

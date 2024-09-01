@@ -16,10 +16,18 @@ func _ready() -> void:
 		var path: String = folder + "/data.dat";
 		var data: PackedByteArray = FileAccess.get_file_as_bytes(path);
 		if !data.is_empty():
-			var _name: String = map.trim_prefix(" ").trim_suffix(" ").replace("_", " ");
-			var _seed: int = data.decode_s32(0);
-			var _size: int = data.decode_u8(4);
-			var _data: PackedByteArray = data.slice(5);
+			var buffer: StreamPeerBuffer = StreamPeerBuffer.new();
+			buffer.data_array = data;
+			buffer.seek(0)
+			var _name_size: int = buffer.get_u32();
+			buffer.seek(4);
+			var _name: String = buffer.get_string(_name_size);
+			buffer.seek(4 + _name_size);
+			var _seed: int = buffer.get_64();
+			buffer.seek(12 + _name_size);
+			var _size: int = buffer.get_u8();
+			buffer.seek(13 + _name_size);
+			var _data: PackedByteArray = data.slice(13 + _name_size);
 			var map_item: MapItem = map_item_scene.instantiate();
 			map_item.world_name = _name;
 			map_item.world_seed = _seed;
