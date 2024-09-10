@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dipb8u1qqhja1"]
+
+[ext_resource type="Script" path="res://Voice.gd" id="1_uxfid"]
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_3i112"]
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_q5yom"]
+
+[node name="Voice" type="Node2D" node_paths=PackedStringArray("input", "output")]
+script = ExtResource("1_uxfid")
+input = NodePath("Input")
+output = NodePath("Output")
+
+[node name="Input" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamMicrophone_3i112")
+
+[node name="Output" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamGenerator_q5yom")

@@ -1,21 +1,22 @@
 extends Node
 
-var game: PackedScene = preload("res://Game.tscn");
 var id: int = 0;
+var username: String = "";
 
 func _ready() -> void:
 	randomize();
 
-func join_game(address = "") -> Error:
-	Loading.start("Procurando servidor . . .");
+@rpc("any_peer", "call_local", "reliable")
+func registry(_username: String, _access_key: String) -> void:
+	username = _username;
+	RegistryScreen.finish(_access_key);
+
+func join_game(address: String = "") -> Error:
+	Loading.start_indeterminate("Procurando servidor . . .");
 	if address.is_empty(): address = Server.DEFAULT_IP;
 	var peer = ENetMultiplayerPeer.new();
 	var error = peer.create_client(address, Server.PORT);
-	if error:
-		Loading.finish(); 
-		return error;
-	get_tree().change_scene_to_packed(game);
-	Loading.update(0, "Conectando-se ao servidor . . .");
+	if error != OK: return error;
 	multiplayer.multiplayer_peer = peer;
 	id = multiplayer.get_unique_id();
 	return OK;

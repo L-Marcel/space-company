@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://df6p8gi3ivwq6"]
+
+[ext_resource type="Script" path="res://interface/Cursor.gd" id="1_6tr4i"]
+[ext_resource type="Texture2D" uid="uid://cg64ppoa8bn70" path="res://assets/cursor_0.png" id="2_t5kbj"]
+[ext_resource type="Texture2D" uid="uid://b75krvylyjyjq" path="res://assets/cursor_2.png" id="3_uhixi"]
+[ext_resource type="Texture2D" uid="uid://dab006dheaa63" path="res://assets/cursor_3.png" id="4_gaioi"]
+[ext_resource type="Script" path="res://machine/PriorityMachine.gd" id="5_idkik"]
+[ext_resource type="Script" path="res://machine/State.gd" id="5_invsu"]
+
+[node name="Cursor" type="Control" node_paths=PackedStringArray("icon", "machine")]
+z_index = 4096
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6tr4i")
+icon = NodePath("Icon")
+machine = NodePath("PriorityMachine")
+put_texture = ExtResource("3_uhixi")
+destroy_texture = ExtResource("4_gaioi")
+
+[node name="Icon" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 16.0
+offset_bottom = 16.0
+texture = ExtResource("2_t5kbj")
+
+[node name="PriorityMachine" type="Node" parent="."]
+process_mode = 4
+script = ExtResource("5_idkik")
+
+[node name="Default" type="Node" parent="PriorityMachine"]
+process_mode = 4
+script = ExtResource("5_invsu")
+id = &"default"
+
+[node name="Destroy" type="Node" parent="PriorityMachine"]
+process_mode = 4
+script = ExtResource("5_invsu")
+id = &"destroy"
+priority = 1
+
+[node name="Put" type="Node" parent="PriorityMachine"]
+process_mode = 4
+script = ExtResource("5_invsu")
+id = &"put"
+priority = 2
+
+[connection signal="states_changed" from="PriorityMachine" to="." method="_on_priority_machine_states_changed"]
+[connection signal="process" from="PriorityMachine/Default" to="." method="_on_default_process"]
+[connection signal="renamed" from="PriorityMachine/Default" to="PriorityMachine/Default" method="_renamed"]
+[connection signal="entered" from="PriorityMachine/Destroy" to="." method="_on_destroy_entered"]
+[connection signal="renamed" from="PriorityMachine/Destroy" to="PriorityMachine/Destroy" method="_renamed"]
+[connection signal="entered" from="PriorityMachine/Put" to="." method="_on_put_entered"]
+[connection signal="process" from="PriorityMachine/Put" to="." method="_on_put_process"]
+[connection signal="renamed" from="PriorityMachine/Put" to="PriorityMachine/Put" method="_renamed"]

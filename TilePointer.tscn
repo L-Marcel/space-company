@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://nautd0waycih"]
+
+[ext_resource type="Script" path="res://TilePointer.gd" id="1_1nl2r"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -112.0
+offset_top = -80.0
+offset_right = -112.0
+offset_bottom = -80.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_1nl2r")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 16.0
+offset_bottom = 16.0

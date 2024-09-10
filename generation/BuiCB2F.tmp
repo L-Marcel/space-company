@@ -1,0 +1,93 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgej4vsjvpt41"]
+
+[ext_resource type="Script" path="res://generation/Builder.gd" id="1_swjqu"]
+[ext_resource type="Theme" uid="uid://brta0jtdgqq32" path="res://interface/BuilderTheme.tres" id="2_cv64v"]
+
+[node name="Builder" type="Control" node_paths=PackedStringArray("rows", "columns", "canvas")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_swjqu")
+rows = NodePath("Rows")
+columns = NodePath("Columns")
+canvas = NodePath("Canvas")
+
+[node name="Rows" type="VBoxContainer" parent="."]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 48.0
+offset_bottom = 48.0
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="HSeparator3" type="HSeparator" parent="Rows"]
+layout_mode = 2
+theme = ExtResource("2_cv64v")
+theme_override_constants/separation = 0
+
+[node name="HSeparator4" type="HSeparator" parent="Rows"]
+layout_mode = 2
+theme = ExtResource("2_cv64v")
+theme_override_constants/separation = 0
+
+[node name="HSeparator5" type="HSeparator" parent="Rows"]
+layout_mode = 2
+theme = ExtResource("2_cv64v")
+theme_override_constants/separation = 0
+
+[node name="HSeparator6" type="HSeparator" parent="Rows"]
+layout_mode = 2
+theme = ExtResource("2_cv64v")
+theme_override_constants/separation = 0
+
+[node name="Columns" type="HBoxContainer" parent="."]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 48.0
+offset_bottom = 48.0
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Columns"]
+layout_mode = 2
+theme = ExtResource("2_cv64v")
+theme_override_constants/separation = 0
+
+[node name="VSeparator3" type="VSeparator" parent="Columns"]
+layout_mode = 2
+theme = ExtResource("2_cv64v")
+theme_override_constants/separation = 0
+
+[node name="VSeparator4" type="VSeparator" parent="Columns"]
+layout_mode = 2
+theme = ExtResource("2_cv64v")
+theme_override_constants/separation = 0
+
+[node name="VSeparator5" type="VSeparator" parent="Columns"]
+layout_mode = 2
+theme = ExtResource("2_cv64v")
+theme_override_constants/separation = 0
+
+[node name="Canvas" type="CanvasLayer" parent="."]
+
+[node name="Area" type="Control" parent="Canvas"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CenterContainer" type="CenterContainer" parent="Canvas/Area"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 55.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Canvas/Area/CenterContainer"]
+layout_mode = 2
+text = "testando .... "

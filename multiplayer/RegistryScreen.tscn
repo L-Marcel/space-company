@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://ceclddtvqvhge"]
+
+[ext_resource type="Script" path="res://multiplayer/RegistryScreen.gd" id="1_axm6n"]
+
+[node name="RegistryScreen" type="CanvasLayer" node_paths=PackedStringArray("error_label")]
+visible = false
+script = ExtResource("1_axm6n")
+error_label = NodePath("Center/Options/Error")
+
+[node name="Center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Options" type="VBoxContainer" parent="Center"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="Center/Options"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+placeholder_text = "Nome do personagem"
+alignment = 1
+max_length = 30
+
+[node name="Error" type="Label" parent="Center/Options"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.455298, 0.386895, 1)
+text = "Aviso: não pode ser alterado"
+horizontal_alignment = 1
+
+[node name="New" type="Button" parent="Center/Options"]
+layout_mode = 2
+text = "Confirmar"
+
+[node name="Exit" type="Button" parent="Center/Options"]
+layout_mode = 2
+text = "Cancelar"
+
+[connection signal="text_changed" from="Center/Options/LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="pressed" from="Center/Options/New" to="." method="_on_new_pressed"]
+[connection signal="pressed" from="Center/Options/Exit" to="." method="_on_exit_pressed"]

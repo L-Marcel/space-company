@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://c426ecrpbsjbs"]
+
+[ext_resource type="PackedScene" uid="uid://crybem2vv88d1" path="res://generation/Map.tscn" id="1_ae476"]
+[ext_resource type="Script" path="res://Game.gd" id="1_is8yl"]
+[ext_resource type="PackedScene" uid="uid://dgej4vsjvpt41" path="res://generation/Builder.tscn" id="3_g16l4"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_is8yl")
+
+[node name="Map" parent="." instance=ExtResource("1_ae476")]
+process_thread_group = 2
+process_thread_group_order = 0
+process_thread_messages = 3
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+process_mode = 3
+_spawnable_scenes = PackedStringArray("res://Player.tscn")
+spawn_path = NodePath("..")
+
+[node name="Builder" parent="." instance=ExtResource("3_g16l4")]
+
+[connection signal="loaded" from="Map" to="." method="_on_map_loaded"]

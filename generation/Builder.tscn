@@ -1,0 +1,192 @@
+[gd_scene load_steps=12 format=3 uid="uid://dgej4vsjvpt41"]
+
+[ext_resource type="Script" path="res://generation/Builder.gd" id="1_swjqu"]
+[ext_resource type="Script" path="res://scripts/Item.gd" id="2_snxw7"]
+[ext_resource type="Texture2D" uid="uid://dnau2hiqg2jo7" path="res://assets/base.png" id="3_ihuqm"]
+[ext_resource type="Script" path="res://scripts/BlockItem.gd" id="4_jf2qr"]
+[ext_resource type="Texture2D" uid="uid://dt1cdg6syoy53" path="res://assets/player_icon.png" id="5_jq4v2"]
+[ext_resource type="PackedScene" uid="uid://b1v58qfxxbw3r" path="res://interface/Bar.tscn" id="5_kjqxf"]
+[ext_resource type="Script" path="res://generation/Information.gd" id="5_mu5jn"]
+[ext_resource type="Texture2D" uid="uid://cvk3rt8w7eto1" path="res://assets/oxygen_tank_icon.png" id="6_1jnwv"]
+[ext_resource type="Texture2D" uid="uid://n0yr2fin3ajp" path="res://assets/energy_cell_icon.png" id="8_jexnd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_030ik"]
+atlas = ExtResource("3_ihuqm")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="Resource" id="Resource_raeq1"]
+script = ExtResource("4_jf2qr")
+type = 1
+icon = SubResource("AtlasTexture_030ik")
+name = "Bloco"
+category = "Estrutura"
+price = 0.0
+
+[node name="GUI" type="Control" node_paths=PackedStringArray("builder", "shop", "information", "list", "item_icon")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_swjqu")
+builder = NodePath("Builder")
+shop = NodePath("Builder/Shop")
+information = NodePath("Screen/HUD")
+list = NodePath("Builder/Shop/Area/TabContainer/MarginContainer/ItemList")
+item_icon = NodePath("Builder/ItemIcon")
+items = Array[ExtResource("2_snxw7")]([SubResource("Resource_raeq1")])
+
+[node name="Builder" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ItemIcon" type="TextureRect" parent="Builder"]
+visible = false
+modulate = Color(1, 0, 0, 0.501961)
+layout_mode = 0
+offset_right = 16.0
+offset_bottom = 16.0
+texture = SubResource("AtlasTexture_030ik")
+
+[node name="Shop" type="CanvasLayer" parent="Builder"]
+visible = false
+
+[node name="Area" type="Control" parent="Builder/Shop"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabContainer" type="TabContainer" parent="Builder/Shop/Area"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -271.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Builder/Shop/Area/TabContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+metadata/_tab_index = 0
+
+[node name="ItemList" type="ItemList" parent="Builder/Shop/Area/TabContainer/MarginContainer"]
+layout_mode = 2
+item_count = 1
+max_columns = 4
+icon_scale = 3.0
+item_0/text = "Bloco"
+item_0/icon = SubResource("AtlasTexture_030ik")
+
+[node name="Screen" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="MarginContainer" parent="Screen" node_paths=PackedStringArray("oxygen_bar", "energy_bar")]
+offset_right = 217.0
+offset_bottom = 72.0
+scale = Vector2(3, 3)
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("5_mu5jn")
+oxygen_bar = NodePath("HBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/Oxygen")
+energy_bar = NodePath("HBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/Energy")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Screen/HUD"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Screen/HUD/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="TextureRect" type="TextureRect" parent="Screen/HUD/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("5_jq4v2")
+stretch_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Screen/HUD/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Screen/HUD/HBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="TextureRect" type="TextureRect" parent="Screen/HUD/HBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("6_1jnwv")
+
+[node name="Oxygen" parent="Screen/HUD/HBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_kjqxf")]
+custom_minimum_size = Vector2(75, 5)
+layout_mode = 2
+gradient = true
+width = 75.0
+height = 5.0
+border_color = Color(0.180392, 0.133333, 0.184314, 1)
+back_color = Color(0.607843, 0.670588, 0.698039, 1)
+fake_color = Color(1, 1, 1, 1)
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Screen/HUD/HBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="TextureRect" type="TextureRect" parent="Screen/HUD/HBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("8_jexnd")
+
+[node name="Energy" parent="Screen/HUD/HBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_kjqxf")]
+custom_minimum_size = Vector2(75, 5)
+layout_mode = 2
+width = 75.0
+height = 5.0
+border_color = Color(0.180392, 0.133333, 0.184314, 1)
+back_color = Color(0.403922, 0.4, 0.2, 1)
+fake_color = Color(1, 1, 1, 1)
+value_color = Color(0.984314, 1, 0.52549, 1)
+initial_color = Color(0.635294, 0.662745, 0.278431, 1)
+current_value = 65.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Screen/HUD/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="Energy" parent="Screen/HUD/HBoxContainer/VBoxContainer2" instance=ExtResource("5_kjqxf")]
+custom_minimum_size = Vector2(75, 5)
+layout_direction = 3
+layout_mode = 2
+size_flags_horizontal = 8
+width = 75.0
+height = 5.0
+border_color = Color(0.180392, 0.133333, 0.184314, 1)
+back_color = Color(0.403922, 0.4, 0.2, 1)
+fake_color = Color(1, 1, 1, 1)
+value_color = Color(0.984314, 1, 0.52549, 1)
+initial_color = Color(0.635294, 0.662745, 0.278431, 1)
+current_value = 65.0
+
+[connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="item_clicked" from="Builder/Shop/Area/TabContainer/MarginContainer/ItemList" to="." method="_on_item_list_item_clicked"]
+[connection signal="item_selected" from="Builder/Shop/Area/TabContainer/MarginContainer/ItemList" to="." method="_on_item_list_item_selected"]

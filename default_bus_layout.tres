@@ -1,0 +1,40 @@
+[gd_resource type="AudioBusLayout" load_steps=6 format=3 uid="uid://dg71yb62edbbf"]
+
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_y1vkv"]
+resource_name = "Compressor"
+
+[sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_axrsx"]
+resource_name = "Limiter"
+
+[sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_4bx56"]
+resource_name = "Limiter"
+
+[sub_resource type="AudioEffectStereoEnhance" id="AudioEffectStereoEnhance_lu0or"]
+resource_name = "StereoEnhance"
+
+[sub_resource type="AudioEffectCapture" id="AudioEffectCapture_pu8vy"]
+resource_name = "Capture"
+
+[resource]
+bus/0/effect/0/effect = SubResource("AudioEffectCompressor_y1vkv")
+bus/0/effect/0/enabled = true
+bus/0/effect/1/effect = SubResource("AudioEffectLimiter_axrsx")
+bus/0/effect/1/enabled = true
+bus/1/name = &"Testing"
+bus/1/solo = false
+bus/1/mute = true
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
+bus/2/name = &"Record"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = 0.0
+bus/2/send = &"Testing"
+bus/2/effect/0/effect = SubResource("AudioEffectLimiter_4bx56")
+bus/2/effect/0/enabled = true
+bus/2/effect/1/effect = SubResource("AudioEffectStereoEnhance_lu0or")
+bus/2/effect/1/enabled = true
+bus/2/effect/2/effect = SubResource("AudioEffectCapture_pu8vy")
+bus/2/effect/2/enabled = true

@@ -1,0 +1,6 @@
+[gd_resource type="CanvasTexture" load_steps=2 format=3 uid="uid://did3hombte7qr"]
+
+[ext_resource type="Texture2D" uid="uid://b5gmkysowm76j" path="res://assets/normal_player.png" id="1_2ew3a"]
+
+[resource]
+normal_texture = ExtResource("1_2ew3a")

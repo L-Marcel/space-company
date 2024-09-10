@@ -11,10 +11,11 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="Loading" type="CanvasLayer" node_paths=PackedStringArray("progress", "label")]
+[node name="Loading" type="CanvasLayer" node_paths=PackedStringArray("progress", "label", "button")]
 script = ExtResource("1_tkh18")
 progress = NodePath("PanelContainer/VBoxContainer/ProgressBar")
-label = NodePath("PanelContainer/VBoxContainer/MarginContainer/Label")
+label = NodePath("PanelContainer/VBoxContainer/Label")
+button = NodePath("PanelContainer/VBoxContainer/Button")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -27,7 +28,7 @@ color = Color(0.227451, 0.227451, 0.227451, 1)
 [node name="PanelContainer" type="PanelContainer" parent="."]
 clip_children = 2
 clip_contents = true
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(600, 0)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -44,22 +45,25 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_37nsq")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 layout_mode = 2
+theme_override_constants/separation = 12
 alignment = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
-
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer"]
-layout_mode = 2
-text = "Criando mundo . . . "
+text = "Não foi possível se conectar ao servidor! Verifique os dados informados, sua conexão com a internet e a disponibilidade do servidor."
+horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="PanelContainer/VBoxContainer"]
-process_thread_group = 2
-process_thread_group_order = 0
-process_thread_messages = 0
-custom_minimum_size = Vector2(47, 0)
+custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Continuar"
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

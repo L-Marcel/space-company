@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://c56syvamcs0lj"]
+
+[ext_resource type="Script" path="res://interface/HostMenu.gd" id="1_v6f30"]
+
+[node name="HostMenu" type="Control" node_paths=PackedStringArray("maps_container")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v6f30")
+maps_container = NodePath("Center/Options/Maps")
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Options" type="VBoxContainer" parent="Center"]
+layout_mode = 2
+
+[node name="Maps" type="VBoxContainer" parent="Center/Options"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="New" type="Button" parent="Center/Options"]
+layout_mode = 2
+text = "Novo Mapa"
+
+[node name="Exit" type="Button" parent="Center/Options"]
+layout_mode = 2
+text = "Voltar"
+
+[connection signal="pressed" from="Center/Options/New" to="." method="_on_new_pressed"]
+[connection signal="pressed" from="Center/Options/Exit" to="." method="_on_exit_pressed"]

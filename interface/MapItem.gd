@@ -9,6 +9,7 @@ var delete_confirmation_scene: PackedScene = preload("res://interface/DeleteWorl
 @export var _size_label: Label;
 
 var world_name: String = "Exemplo";
+var world_uuid: String = "";
 var world_folder: String = "";
 var world_seed: int = 1000000;
 var world_size: int;
@@ -40,4 +41,4 @@ func _on_confirm_delete() -> void:
 			queue_free();
 
 func _on_load_pressed() -> void:
-	Server.create_game(world_name, world_size, world_size, world_data);
+	Server.create_game(world_name, world_uuid, world_size, world_seed, world_data);

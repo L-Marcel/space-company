@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://1dxau1g6glw1"]
+
+[ext_resource type="Script" path="res://Zone.gd" id="1_0oo41"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cp22r"]
+size = Vector2(16, 16)
+
+[node name="Zone" type="Area2D" node_paths=PackedStringArray("collision")]
+script = ExtResource("1_0oo41")
+collision = NodePath("Collision")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(8, 8)
+shape = SubResource("RectangleShape2D_cp22r")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

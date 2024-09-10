@@ -2,23 +2,26 @@ extends Node
 
 var _buffer: StreamPeerBuffer = StreamPeerBuffer.new();
 var _atlas_buffer: StreamPeerBuffer = StreamPeerBuffer.new();
+var _dynamic_resistences: PackedFloat32Array = [];
+var _static_resistences: PackedFloat32Array = [];
+
 var _noise: FastNoiseLite = FastNoiseLite.new();
 
-var updated: bool = false;
-signal update;
+signal changed(at: Vector2i, index: int);
 
 func _ready() -> void:
 	_noise.seed = randi();
 	_noise.fractal_octaves = 10;
 
-func fetch(_seed: int, _bytes: PackedByteArray) -> void:
+func fetch(_seed: int, _bytes: PackedByteArray) -> PackedByteArray:
 	_noise.seed = _seed;
-	var half: int = floor(_bytes.size() / 2);
-	_buffer.data_array = _bytes.slice(0, half);
-	_atlas_buffer.data_array = _bytes.slice(half);
+	var part: float = float(1024 * World.height * World.width);
+	_buffer.data_array = _bytes.slice(0, part);
+	_atlas_buffer.data_array = _bytes.slice(part, part * 2);
+	_static_resistences = _bytes.slice(part * 2, part * 6).to_float32_array();
+	_dynamic_resistences = _bytes.slice(part * 6, part * 10).to_float32_array();
 	Loading.update(5, "Carregando mundo . . .");
-	updated = true;
-	update.emit();
+	return _bytes.slice(part * 10);
 func generate(_seed: int, _size: int) -> void:
 	_noise.seed = _seed;
 	var size: Vector2i = World.convert_size(_size);
@@ -30,6 +33,8 @@ func generate(_seed: int, _size: int) -> void:
 			_buffer.resize(index);
 			_buffer.seek(index);
 			_buffer.put_u8(type);
+			_static_resistences.append(_get_initial_static_resisence(type));
+			_dynamic_resistences.append(_get_initial_dynamic_resisence(type));
 			index += 1;
 		Loading.update(38.0 * (index / total), "Gerando mundo . . .");
 		OS.delay_msec(1);
@@ -118,28 +123,73 @@ func match_atlas(neighborts: Array[bool] = []) -> int:
 		_: return 41;
 
 func get_seed() -> int:
-	return _noise.seeed;
+	return _noise.seed;
 func get_bytes() -> PackedByteArray:
 	var bytes: PackedByteArray = [];
 	bytes.append_array(_buffer.data_array);
 	bytes.append_array(_atlas_buffer.data_array);
+	bytes.append_array(_static_resistences.to_byte_array());
+	bytes.append_array(_dynamic_resistences.to_byte_array());
 	return bytes;
 
+func safe_position_to_index(x: int, y: int, width: int = World.width, height: int = World.height) -> int:
+	if x < 0 || y < 0: return -1;
+	var xx: int = width * 32;
+	var yy: int = height * 32;
+	if x >= xx || y >= yy: return -1;
+	return position_to_index(x, y, width, height);
 func position_to_index(x: int, y: int, width: int = World.width, height: int = World.height) -> int:
 	var xx: int = width * 32;
 	var yy: int = height * 32;
 	return (clamp(y, 0, yy - 1) * xx) + clamp(x, 0, xx - 1);
+
+#region Atlas
+func update_atlas(x: int, y: int, width: int = World.width, height: int = World.height) -> void:
+	var index: int = safe_position_to_index(x, y);
+	if index < 0: return;
+	var atlas: int = get_atlas(x, y, width, height);
+	_atlas_buffer.seek(index);
+	_atlas_buffer.put_u8(atlas);
 func atlas_at(x: int, y: int, width: int = World.width, height: int = World.height) -> int:
 	return atlas_on(position_to_index(x, y, width, height));
 func atlas_on(index: int) -> int:
 	_atlas_buffer.seek(index);
 	return _atlas_buffer.get_u8();
+#endregion
+
+#region Type
+func set_at(x: int, y: int, type: int, width: int = World.width, height: int = World.height) -> void:
+	var index: int = safe_position_to_index(x, y, width, height);
+	if index < 0: return;
+	set_on(index, type);
 func at(x: int, y: int, width: int = World.width, height: int = World.height) -> int:
 	return on(position_to_index(x, y, width, height));
+func set_on(index: int, type: int) -> void:
+	_buffer.seek(index);
+	_buffer.put_u8(type);
 func on(index: int) -> int:
 	_buffer.seek(index);
 	return _buffer.get_u8();
+#endregion
 
+#region Resistence
+func try_break(index: int, force: float) -> float:
+	var static_resistence: float = _static_resistences[index];
+	if force >= static_resistence:
+		var dynamic_resistence: float = _dynamic_resistences[index];
+		dynamic_resistence = max(dynamic_resistence - force, 0);
+		_dynamic_resistences.set(index, dynamic_resistence);
+		return dynamic_resistence;
+	return -1;
+#endregion
+
+#region Values
+func _get_initial_dynamic_resisence(type: int) -> float:
+	match type:
+		_: return 1.0;
+func _get_initial_static_resisence(type: int) -> float:
+	match type:
+		_: return 0.0;
 func _get_noise_at(x: int, y: int) -> int:
 	var surface: float = (_noise.get_noise_2d(x, 0) * 10) + 10;
 	var value: float = _noise.get_noise_2d(x, y);
@@ -147,3 +197,4 @@ func _get_noise_at(x: int, y: int) -> int:
 	elif value >= 0.5: return 3;
 	elif value >= -0.5: return 2;
 	return 0;
+#endregion

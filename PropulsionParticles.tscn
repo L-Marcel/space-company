@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://dms7hiqfpgb5v"]
+
+[ext_resource type="Texture2D" uid="uid://bk04573ou1i57" path="res://assets/propulsion_particle.png" id="1_t5xqn"]
+[ext_resource type="Script" path="res://PropulsionParticles.gd" id="2_7117j"]
+
+[sub_resource type="Curve" id="Curve_bhb1x"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.252688, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_iljkb"]
+curve = SubResource("Curve_bhb1x")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gfprr"]
+particle_flag_disable_z = true
+angle_min = -90.0
+angle_max = 90.0
+direction = Vector3(0, 1, 0)
+spread = 12.0
+flatness = 1.0
+initial_velocity_min = 50.0
+initial_velocity_max = 80.0
+gravity = Vector3(0, 10, 0)
+alpha_curve = SubResource("CurveTexture_iljkb")
+turbulence_influence_min = 0.126
+turbulence_influence_max = 0.126
+
+[node name="PropulsionParticles" type="GPUParticles2D"]
+z_index = -10
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_gfprr")
+texture = ExtResource("1_t5xqn")
+lifetime = 0.6
+randomness = 0.2
+script = ExtResource("2_7117j")
